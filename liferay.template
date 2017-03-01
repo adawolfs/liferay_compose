@@ -1,0 +1,8 @@
+server {
+
+	listen ${NGINX_PORT};
+	location / {
+		proxy_pass ${LIFERAY_HOST};
+	}
+
+}

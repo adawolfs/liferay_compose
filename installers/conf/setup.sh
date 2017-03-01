@@ -15,7 +15,7 @@
 #echo "export VISIBLE=now" >> /etc/profile &&
 
 #Install unzip
-dpkg -i /installers/packages/unzip* &&
+#dpkg -i /installers/packages/unzip* &&
 
 
 # Install JDK from /installers/packages/

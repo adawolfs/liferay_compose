@@ -2,13 +2,11 @@ FROM debian:8
 
 MAINTAINER Alvin Estrada aestrada@digitalgeko.com
 
+
+#RUN apk --update add bash wget dpkg-dev
+
 #Create user for elasticsearch
-RUN useradd -ms /bin/bash esearch
-
-#UPDATE REPOSITORY
-RUN apt-get update
-
-RUN apt-get install -y curl
+RUN useradd esearch
 
 #Copy elasticsearch to opt
 ADD packages/elasticsearch /opt/elasticsearch
