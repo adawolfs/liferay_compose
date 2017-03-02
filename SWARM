@@ -1,0 +1,54 @@
+#Configurar maquina como manager
+sudo docker swarm init --advertise-addr <IP MANAGER>
+
+#To know the swarm join token
+docker swarm join-token manager
+
+docker-machine create -d virtualbox worker1
+docker-machine create -d virtualbox worker2
+
+#Add nodes to manager
+
+#Create network overlay https://docs.docker.com/engine/swarm/networking/
+sudo docker network create --driver overlay --subnet 10.0.9.0/24 liferay_swarm
+
+#Check networks
+sudo docker network ls
+
+#Run registry for local
+sudo docker service create --name registry --publish 5000:5000 registry:2
+
+#Enable docker service logs (only enable mode)
+sudo sh -c 'echo { \"experimental\": true } >> /etc/docker/daemon.json'
+sudo service docker restart
+
+#Create tags for registry images
+sudo docker tag percona			localhost:5000/percona
+sudo docker tag liferay_elastic localhost:5000/elastic
+sudo docker tag liferay_liferay localhost:5000/liferay
+
+#Push images to local registry
+sudo docker push localhost:5000/percona
+sudo docker push localhost:5000/elastic
+sudo docker push localhost:5000/liferay
+
+#Create service for percona
+sudo docker service create \
+--replicas 1 --name percona \
+--env-file percona.env \
+--network liferay_swarm \
+localhost:5000/percona
+
+#Create service for elasticsearch
+sudo docker service create \
+--replicas 1 --name elastic \
+--env-file elasticsearch/elasticsearch.env \
+--network liferay_swarm \
+localhost:5000/elastic
+
+#Create service for liferay
+sudo docker service create \
+--replicas 1 --name liferay \
+--network liferay_swarm \
+--publish 8080:8080 \
+localhost:5000/liferay
