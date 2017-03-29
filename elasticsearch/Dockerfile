@@ -1,4 +1,4 @@
-FROM debian:8
+FROM ubuntu:16.04
 
 MAINTAINER Alvin Estrada aestrada@digitalgeko.com
 

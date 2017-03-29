@@ -1,8 +1,8 @@
 #Configurar maquina como manager
-sudo docker swarm init --advertise-addr <IP MANAGER>
+sudo docker swarm init- -dadvertise-addr <IP MANAGER>
 
-#To know the swarm join token
-docker swarm join-token manager
+#To know the swarm join tokend
+addocker swarm join-token manager
 
 docker-machine create -d virtualbox worker1
 docker-machine create -d virtualbox worker2
@@ -16,7 +16,7 @@ sudo docker network create --driver overlay --subnet 10.0.9.0/24 liferay_swarm
 sudo docker network ls
 
 #Run registry for local
-sudo docker service create --name registry --publish 5000:5000 registry:2
+sudo docker service create --name registry --network liferay_swarm --publish 5000:5000 registry:2
 
 #Enable docker service logs (only enable mode)
 sudo sh -c 'echo { \"experimental\": true } >> /etc/docker/daemon.json'
@@ -44,11 +44,21 @@ sudo docker service create \
 --replicas 1 --name elastic \
 --env-file elasticsearch/elasticsearch.env \
 --network liferay_swarm \
+--publish 9200:9200 \
 localhost:5000/elastic
 
 #Create service for liferay
 sudo docker service create \
 --replicas 1 --name liferay \
+--env-file liferay.env \
 --network liferay_swarm \
 --publish 8080:8080 \
 localhost:5000/liferay
+
+
+
+sudo docker run \
+--name nginx-proxy \
+-v /var/run/docker.sock:/tmp/docker.sock:ro \
+-p 80:80 \
+jwilder/nginx-proxy
