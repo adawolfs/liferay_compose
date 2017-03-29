@@ -13,7 +13,7 @@ ADD packages/elasticsearch /opt/elasticsearch
 ADD packages /installers
 
 #Extract Java
-RUN tar -zxvf /installers/jdk* -C /opt/
+RUN tar -zxvf /installers/packages/jdk* -C /opt/
 RUN ln -s /opt/jdk* /opt/jdk
 RUN rm -rf /installers
 
