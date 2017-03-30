@@ -1,4 +1,4 @@
-optoFROM ubuntu:16.04
+FROM ubuntu:16.04
 
 MAINTAINER Alvin Estrada aestrada@digitalgeko.com
 
