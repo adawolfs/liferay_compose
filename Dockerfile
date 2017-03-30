@@ -31,7 +31,7 @@ ENV JRE_HOME "/opt/jdk"
 ENV PATH $PATH:$JAVA_HOME/bin
 
 COPY ./installers/conf/portal-ext.properties /conf/
-RUN ln -s /conf/portal-ext.properties /opt/portal-ext.properties
+RUN ln -s /conf/portal-ext.properties /opt/liferay/portal-ext.properties
 COPY ./installers/conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg /opt/liferay/osgi/modules/
 
 CMD ["/opt/liferay/tomcat/bin/catalina.sh", "run"]
