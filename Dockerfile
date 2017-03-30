@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+optoFROM ubuntu:16.04
 
 MAINTAINER Alvin Estrada aestrada@digitalgeko.com
 
@@ -7,6 +7,7 @@ ADD installers /installers
 
 # Install JDK from /installers/packages/
 RUN mkdir -p /opt
+RUN mkdir -p /conf
 RUN tar -zxvf /installers/packages/jdk* -C /opt/
 RUN ln -s /opt/jdk* /opt/jdk
 
@@ -29,7 +30,8 @@ ENV JAVA_HOME "/opt/jdk"
 ENV JRE_HOME "/opt/jdk"
 ENV PATH $PATH:$JAVA_HOME/bin
 
-COPY ./installers/conf/portal-ext.properties /opt/liferay/
+COPY ./installers/conf/portal-ext.properties /conf/
+RUN ln -s /conf/portal-ext.properties /opt/portal-ext.properties
 COPY ./installers/conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg /opt/liferay/osgi/modules/
 
 CMD ["/opt/liferay/tomcat/bin/catalina.sh", "run"]
