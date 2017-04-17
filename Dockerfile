@@ -39,6 +39,9 @@ RUN touch /conf/system-ext.properties
 RUN touch /conf/com.liferay.portal.store.s3.configuration.S3StoreConfiguration.cfg
 RUN touch /conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg
 
+#Create folder to store elasticsearch config
+RUN mkdir -p /opt/liferay/osgi/modules/
+
 #Create SymLinks
 RUN ln -s /conf/portal-ext.properties /opt/liferay/portal-ext.properties
 RUN ln -s /conf/system-ext.properties /opt/liferay/system-ext.properties
