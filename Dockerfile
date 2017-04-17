@@ -30,8 +30,19 @@ ENV JAVA_HOME "/opt/jdk"
 ENV JRE_HOME "/opt/jdk"
 ENV PATH $PATH:$JAVA_HOME/bin
 
-COPY ./installers/conf/portal-ext.properties /conf/
+#COPY ./installers/conf/portal-ext.properties /conf/
+#COPY ./installers/conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg /conf/
+
+#Create dummy config files
+RUN touch /conf/portal-ext.properties
+RUN touch /conf/system-ext.properties
+RUN touch /conf/com.liferay.portal.store.s3.configuration.S3StoreConfiguration.cfg
+RUN touch /conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg
+
+#Create SymLinks
 RUN ln -s /conf/portal-ext.properties /opt/liferay/portal-ext.properties
-COPY ./installers/conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg /opt/liferay/osgi/modules/
+RUN ln -s /conf/system-ext.properties /opt/liferay/system-ext.properties
+RUN ln -s /conf/com.liferay.portal.store.s3.configuration.S3StoreConfiguration.cfg /opt/liferay/osgi/configs/com.liferay.portal.store.s3.configuration.S3StoreConfiguration.cfg
+RUN ln -s /conf/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg /opt/liferay/osgi/modules/com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.cfg
 
 CMD ["/opt/liferay/tomcat/bin/catalina.sh", "run"]
